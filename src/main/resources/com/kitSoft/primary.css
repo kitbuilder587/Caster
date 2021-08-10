@@ -1,0 +1,36 @@
+* {
+   -fx-text-white: #AEC2B8;
+   -fx-dark: #1F1F1F;
+   -fx-deep-dark: #141414;
+   -fx-bright-dark:#3D3D3D;
+}
+
+#primaryButton{
+    -fx-background-color: -fx-base2;
+    -fx-text-fill: white;
+}
+
+#mainTextArea{
+    -fx-text-fill: -fx-text-white;
+    -fx-display-caret:true;
+    -fx-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-color: -fx-control-inner-background;
+    -fx-background-color: -fx-deep-dark;
+    -fx-background-radius: 0;
+}
+
+#mainTextArea .content{
+    -fx-background-color: -fx-deep-dark;
+    -fx-background-radius: 0;
+}
+
+#rowsCounter{
+    -fx-background-color: -fx-dark;
+    -fx-text-fill: -fx-bright-dark;
+}
+
+.mainSplit:horizontal > .split-pane-divider {
+-fx-border-color: transparent -fx-dark transparent transparent;
+  -fx-background-color: transparent;
+}
