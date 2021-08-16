@@ -31,7 +31,7 @@ public class StringManager {
         for(int i=0;i<n;i++){
             res.append(i+1).append("\n");
         }
-        return res.toString();
+        return "                      \n" + res.toString();
     }
 
     public static int getMaximumColumnsCount(String s){
@@ -45,6 +45,28 @@ public class StringManager {
                 columns++;
             }
         }
+
+        maxColumns = Math.max(maxColumns,columns);
         return maxColumns;
+    }
+
+    public static char getMaximumCharInRows(String s){
+        s= s +"\n";
+        int maxColumns = 0;
+        int columns = 0;
+        char c = '0';
+        for(int i=0;i<s.length();i++){
+            if (s.charAt(i) == '\n'){
+                if(columns > maxColumns){
+                    maxColumns = columns;
+                    if(i==0) c = '\n';
+                    else c = s.charAt(i-1);
+                }
+                columns = 0;
+            }else {
+                columns++;
+            }
+        }
+        return c;
     }
 }

@@ -2,7 +2,7 @@
    -fx-text-white: #AEC2B8;
    -fx-dark: #1F1F1F;
    -fx-deep-dark: #141414;
-   -fx-bright-dark:#3D3D3D;
+   -fx-bright-dark:#817B88;
 }
 
 #primaryButton{
@@ -10,7 +10,7 @@
     -fx-text-fill: white;
 }
 
-#mainTextArea{
+.mainTextArea{
     -fx-text-fill: -fx-text-white;
     -fx-display-caret:true;
     -fx-focus-color: transparent;
@@ -28,6 +28,10 @@
 #rowsCounter{
     -fx-background-color: -fx-dark;
     -fx-text-fill: -fx-bright-dark;
+}
+
+.mainScrollPane > .viewport{
+    -fx-background-color: -fx-deep-dark;
 }
 
 .mainSplit:horizontal > .split-pane-divider {

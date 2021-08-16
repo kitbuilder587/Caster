@@ -11,41 +11,108 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class PrimaryController {
 
-    @FXML
-    public TextArea mainTextArea;
+  //  @FXML
+  //  public TextArea mainTextArea;
 
     @FXML
     public Label linesCounter;
+
+    @FXML
+    public AnchorPane root;
+
+    @FXML
+    public AnchorPane mainTextAreaAnchor;
+
+    public CustomFlowInputArea mainTextArea;
 
     private int currentLine = 0;
 
     private int maximumRows = 0;
     private int maximumColumns = 0;
 
+    private Font newMainTextAreaFont;
+
+    private void setViewPreferences(){
+        try {
+            PrimarySettingsConfigurator.readConfigFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(PrimarySettingsConfigurator.editorTextSize);
+        newMainTextAreaFont = new Font(mainTextArea.getFont().getName(),PrimarySettingsConfigurator.editorTextSize);
+     //   mainTextArea.setFont(newMainTextAreaFont);
+        linesCounter.setFont(newMainTextAreaFont);
+    }
+
+    private void onScrollEvent(int fontHeight){
+      //  linesCounter.setTranslateY(-mainTextArea.getScrollTop() - fontHeight);
+    }
+
     @FXML
     private void initialize(){
-        mainTextArea.caretPositionProperty().addListener(new ChangeListener<Number>() {
+
+        mainTextArea = new CustomFlowInputArea();
+        mainTextArea.getStyleClass().add("mainTextArea");
+        mainTextAreaAnchor.setBottomAnchor(mainTextArea,0.0);
+        mainTextAreaAnchor.setTopAnchor(mainTextArea,0.0);
+        mainTextAreaAnchor.setLeftAnchor(mainTextArea,0.0);
+        mainTextAreaAnchor.setRightAnchor(mainTextArea,0.0);
+        mainTextArea.setFocusTraversable(true);
+        mainTextArea.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                mainTextArea.handle(keyEvent);
+            }
+        });
+
+        mainTextAreaAnchor.getChildren().add(mainTextArea);
+
+        setViewPreferences();
+
+        mainTextAreaAnchor.setPrefHeight(400);
+
+
+        int fontHeight = (int)newMainTextAreaFont.getSize() + (int)linesCounter.getLineSpacing() + 5;
+ /*       mainTextArea.caretPositionProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                currentLine = StringManager.getSymbolLine(mainTextArea.getText(), t1.intValue());
-                int countOfLines = StringManager.getLinesCount(mainTextArea.getText());
-                linesCounter.setText(StringManager.generateStringFrom1ToN(countOfLines));
-                System.out.println(mainTextArea.getScrollTop());
+                onCaretPositionChanged();
+                onScrollEvent(fontHeight);
+            }
+        });
 
+        onScrollEvent(fontHeight);
+        mainTextArea.scrollTopProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                onScrollEvent(fontHeight);
+                onCaretPositionChanged();
             }
         });
 
         mainTextArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                maximumRows = StringManager.getLinesCount(t1);
-                maximumColumns = StringManager.getMaximumColumnsCount(t1);
+                onScrollEvent(fontHeight);
+                onCaretPositionChanged();
             }
-        });
+        });*/
     }
+/*
+    private void onCaretPositionChanged() {
+        int countOfLines = StringManager.getLinesCount(mainTextArea.getText());
+        linesCounter.setText(StringManager.generateStringFrom1ToN(countOfLines));
+    }*/
 }
