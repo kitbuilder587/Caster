@@ -11,12 +11,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -35,6 +37,9 @@ public class PrimaryController {
     @FXML
     public AnchorPane mainTextAreaAnchor;
 
+    @FXML
+    public ScrollPane scrollPane;
+
     public CustomFlowInputArea mainTextArea;
 
     private int currentLine = 0;
@@ -44,6 +49,7 @@ public class PrimaryController {
 
     private Font newMainTextAreaFont;
 
+
     private void setViewPreferences(){
         try {
             PrimarySettingsConfigurator.readConfigFile();
@@ -52,7 +58,7 @@ public class PrimaryController {
         }
         System.out.println(PrimarySettingsConfigurator.editorTextSize);
         newMainTextAreaFont = new Font(mainTextArea.getFont().getName(),PrimarySettingsConfigurator.editorTextSize);
-     //   mainTextArea.setFont(newMainTextAreaFont);
+        mainTextArea.setFont(newMainTextAreaFont);
         linesCounter.setFont(newMainTextAreaFont);
     }
 
@@ -62,21 +68,21 @@ public class PrimaryController {
 
     @FXML
     private void initialize(){
-
         mainTextArea = new CustomFlowInputArea();
         mainTextArea.getStyleClass().add("mainTextArea");
-        mainTextAreaAnchor.setBottomAnchor(mainTextArea,0.0);
-        mainTextAreaAnchor.setTopAnchor(mainTextArea,0.0);
-        mainTextAreaAnchor.setLeftAnchor(mainTextArea,0.0);
-        mainTextAreaAnchor.setRightAnchor(mainTextArea,0.0);
-        mainTextArea.setFocusTraversable(true);
-        mainTextArea.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        AnchorPane.setBottomAnchor(mainTextArea,0.0);
+        AnchorPane.setTopAnchor(mainTextArea,0.0);
+        AnchorPane.setLeftAnchor(mainTextArea,0.0);
+        AnchorPane.setRightAnchor(mainTextArea,0.0);
+        scrollPane.setFocusTraversable(true);
+        scrollPane.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 mainTextArea.handle(keyEvent);
             }
         });
 
+        mainTextArea.setMinWidth(Region.USE_PREF_SIZE);
         mainTextAreaAnchor.getChildren().add(mainTextArea);
 
         setViewPreferences();
